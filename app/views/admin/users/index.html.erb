@@ -1,0 +1,22 @@
+<h2>Reporter Users for <%= current_user.organisation.name %></h2>
+
+<table class="table table-bordered table-striped mt-3">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+        <td><%= user.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Add New Reporter", new_admin_user_path, class: "btn btn-primary mt-3" %>

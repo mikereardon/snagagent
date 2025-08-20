@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :users, only: [ :new, :create, :index ]
+  end
+  devise_for :users, controllers: {
+    registrations: "users/registrations"
+  }
   root "projects#index"
   resources :snags
   resources :projects

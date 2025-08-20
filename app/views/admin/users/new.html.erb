@@ -1,0 +1,12 @@
+<h2>Create Reporter User</h2>
+
+<%= form_with model: @user, url: admin_users_path, local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :email, class: "form-label" %>
+    <%= f.email_field :email, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit "Create Reporter", class: "btn btn-primary" %>
+  </div>
+<% end %>
