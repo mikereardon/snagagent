@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @snag %>
+
+<div>
+  <%= link_to "Edit this snag", edit_snag_path(@snag) %> |
+  <%= link_to "Back to snags", snags_path %>
+
+  <%= button_to "Destroy this snag", @snag, method: :delete %>
+</div>

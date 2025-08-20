@@ -1,0 +1,12 @@
+<% content_for :title, "Editing snag" %>
+
+<h1>Editing snag</h1>
+
+<%= render "form", snag: @snag %>
+
+<br>
+
+<div>
+  <%= link_to "Show this snag", @snag %> |
+  <%= link_to "Back to snags", snags_path %>
+</div>

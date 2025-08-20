@@ -1,0 +1,36 @@
+<%= form_with(model: snag, class: "needs-validation") do |form| %>
+  <% if snag.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(snag.errors.count, "error") %> prohibited this snag from being saved:</h4>
+      <ul>
+        <% snag.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :project_id, "Project", class: "form-label" %>
+    <%= form.collection_select :project_id, Project.all, :id, :name, { prompt: "Select a project" }, { class: "form-select", required: true } %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :location, class: "form-label" %>
+    <%= form.text_field :location, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", rows: 3, required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :created_by, class: "form-label" %>
+    <%= form.text_field :created_by, class: "form-control", required: true %>
+  </div>
+
+  <div class="mt-3">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>
