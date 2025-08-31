@@ -7,7 +7,8 @@ Rails.application.configure do
   config.enable_reloading = false
 
 
-  config.hosts << "snagagent.onrender.com"
+  config.hosts << ENV.fetch("RENDER_EXTERNAL_HOSTNAME", "snagagent.onrender.com")
+
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
