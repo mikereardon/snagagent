@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_20_091608) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_20_100400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "api_keys", force: :cascade do |t|
+    t.bigint "organisation_id", null: false
+    t.string "token"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organisation_id"], name: "index_api_keys_on_organisation_id"
+    t.index ["token"], name: "index_api_keys_on_token"
+  end
 
   create_table "organisations", force: :cascade do |t|
     t.string "name"
@@ -56,6 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_20_091608) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "api_keys", "organisations"
   add_foreign_key "projects", "organisations"
   add_foreign_key "snags", "organisations"
   add_foreign_key "snags", "projects"

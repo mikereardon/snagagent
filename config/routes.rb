@@ -1,29 +1,31 @@
 Rails.application.routes.draw do
+  # Admin UI (admins manage reporter users)
   namespace :admin do
-    resources :users, only: [ :new, :create, :index ]
+    resource  :dashboard, only: :show           # /admin/dashboard
+    resources :api_keys,  only: [ :create, :destroy, :index ]  # regenerate/list tokens
+    resources :users,     only: [ :new, :create, :index ]
   end
+
+  # Devise (custom registrations controller for admin sign-up w/ organisation)
   devise_for :users, controllers: {
     registrations: "users/registrations"
   }
+
+  # HTML app
   root "projects#index"
   resources :snags
   resources :projects
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health + PWA
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/*
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  # Defines the root path route ("/")
-  # root "posts#index"
-  #
-  # namespace :api do
-  namespace :v1 do
-    resources :projects, only: [ :index, :show ]
-    resources :snags, only: [ :index, :show, :create ]
+  # JSON API (ngrok/Steve uses this)
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :projects, only: [ :index, :show ]
+      resources :snags,    only: [ :index, :show, :create ]
+    end
   end
 end

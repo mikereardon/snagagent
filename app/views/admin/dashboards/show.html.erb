@@ -1,0 +1,72 @@
+<!-- app/views/admin/dashboards/show.html.erb -->
+<h2>Admin Dashboard</h2>
+
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title">Organisation</h5>
+    <p class="card-text mb-1"><strong>Name:</strong> <%= @organisation.name %></p>
+    <p class="card-text"><strong>Base API URL:</strong> <code><%= @base_url %></code></p>
+  </div>
+</div>
+
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title">API Keys</h5>
+
+    <% if @api_keys.any? %>
+      <table class="table table-sm">
+        <thead><tr><th>Name</th><th>Token</th><th>Created</th><th></th></tr></thead>
+        <tbody>
+          <% @api_keys.each do |key| %>
+            <tr>
+              <td><%= key.name %></td>
+              <td><code><%= key.token %></code></td>
+              <td><%= l(key.created_at, format: :short) %></td>
+              <td>
+                <%= button_to "Revoke", admin_api_key_path(key), method: :delete,
+                    class: "btn btn-sm btn-outline-danger",
+                    data: { turbo: false, confirm: "Revoke this token? Existing clients will stop working." } %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No API keys yet.</p>
+    <% end %>
+
+    <%= button_to "Generate New Token", admin_api_keys_path,
+          method: :post, class: "btn btn-primary", data: { turbo: false } %>
+    <small class="text-muted ms-2">Share the token above with Steve.</small>
+  </div>
+</div>
+
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title">Quick curl (replace project_id)</h5>
+    <pre class="mb-2"><code>curl -X POST \
+  -H "Authorization: Bearer <%= @api_keys.first&.token || 'YOUR_TOKEN' %>" \
+  -H "Content-Type: application/json" \
+  -d '{"snag":{"project_id":1,"location":"Bedroom","description":"Window sticking","created_by":"reporter@yourco.com"}}' \
+  <%= @base_url %>/snags</code></pre>
+    <p class="mb-0 text-muted">Use GET <code><%= @base_url %>/projects</code> to list project IDs.</p>
+  </div>
+</div>
+
+<div class="card my-3">
+  <div class="card-body">
+    <h5 class="card-title">Projects in this Organisation</h5>
+    <% if @projects.any? %>
+      <table class="table table-sm">
+        <thead><tr><th>ID</th><th>Name</th><th>Address</th></tr></thead>
+        <tbody>
+          <% @projects.each do |p| %>
+            <tr><td><%= p.id %></td><td><%= p.name %></td><td><%= p.address %></td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No projects yet. Create a project first so Steve can attach snags.</p>
+    <% end %>
+  </div>
+</div>
